@@ -1,7 +1,7 @@
 'use strict';
 
-var RECT_COORDS = ['100, 10', '330, 22', '520, 10', '500, 110', '520, 280', '250, 260', '100, 280', '116, 160', '100, 10'];
-var SHADOW_COORDS = ['110, 20', '340, 32', '530, 20', '510, 120', '530, 290', '260, 270', '110, 290', '126, 170', '110, 20'];
+var RECT_COORDS = ['100, 10', '330, 22', '520, 10', '500, 110', '520, 280', '250, 267', '100, 280', '116, 160', '100, 10'];
+var SHADOW_COORDS = ['110, 20', '340, 32', '530, 20', '510, 120', '530, 290', '260, 277', '110, 290', '126, 170', '110, 20'];
 var ZERO_POINT_X = 100;
 var ZERO_POINT_Y = 10;
 var MAX_BAR_HEIGHT = 150;
@@ -36,15 +36,19 @@ function renderShape(ctx, coords, colour) {
 function renderText(ctx) {
   ctx.fillStyle = '#000';
   ctx.font = '16px PT Mono';
-  ctx.fillText('Ура! Вы победили!', 120, 45); // Д19 ? Это магия ?
-  ctx.fillText('Список результатов:', 120, 65);
+  ctx.fillText('Ура! Вы победили!', ZERO_POINT_X + 20, ZERO_POINT_Y + 3 * TOP_GAP); // Д19 ? Это магия ?
+  ctx.fillText('Список результатов:', ZERO_POINT_X + 20, ZERO_POINT_Y + 3 * TOP_GAP + FONT_GAP);
 }
 
 function renderBarChart(ctx, names, times) {
   var numberOfPlayers = times.length;
   var opacities = getRandomNumbers(numberOfPlayers);
-  console.log(numberOfPlayers);
   var padding = (MAX_INNER_WIDTH - BAR_WIDTH * numberOfPlayers - BAR_GAP * (numberOfPlayers - 1)) / 2;
+  var x;
+  var y;
+  var barHeight;
+  var barPaddingTop;
+  var maxTime = getMaxElement(times);
 
   for (var i = 0; i < numberOfPlayers; i++) {
     if (names[i] === 'Вы') {
@@ -54,20 +58,29 @@ function renderBarChart(ctx, names, times) {
       opacities.splice(0, 1);
     }
 
-    ctx.fillRect(ZERO_POINT_X + padding + (BAR_GAP + BAR_WIDTH) * i, ZERO_POINT_Y + 2 * TOP_GAP + 3 * FONT_GAP, BAR_WIDTH, MAX_BAR_HEIGHT);
-    // console.log(padding, ZERO_POINT_X + padding + (BAR_GAP + BAR_WIDTH) * i, ZERO_POINT_Y + 2 * (TOP_GAP + FONT_GAP), BAR_WIDTH, MAX_BAR_HEIGHT); // ctx.fillRect(x, y, width, height)
+    x = ZERO_POINT_X + padding + (BAR_GAP + BAR_WIDTH) * i;
+    y = ZERO_POINT_Y + 2 * TOP_GAP + 3 * FONT_GAP;
+    barHeight = times[i] * MAX_BAR_HEIGHT / maxTime;
+    barPaddingTop = MAX_BAR_HEIGHT - barHeight;
+    var time = Math.round(times[i]);
+
+    ctx.fillRect(x, y + barPaddingTop, BAR_WIDTH, barHeight);
     ctx.fillStyle = '#000';
-    ctx.fillText(names[i], BAR_WIDTH, MAX_BAR_HEIGHT + 40); // text, x, y [, maxWidth]
-    ctx.fillText(times[i], BAR_WIDTH, MAX_BAR_HEIGHT + 80);
+    ctx.fillText(names[i], x, y + MAX_BAR_HEIGHT + FONT_GAP); // text, x, y [, maxWidth]
+    ctx.fillText(time, x, y - TOP_GAP / 2 + barPaddingTop);
   }
 
 }
 
-/* На каждой итерации создаем столбец и имя и время.
-Отдельно задаем насыщенность для игрока 'Вы';
-Рассмотрим случай если не равное кол-во times и names;
-
-*/
+function getMaxElement(array) {
+  var maxElement = array[0];
+  for (var i = 1; i < array.length; i++) {
+    if (array[i] > maxElement) {
+      maxElement = array[i];
+    }
+  }
+  return maxElement;
+}
 
 function getRandomNumbers(players) {
   var numbers = [];
@@ -85,18 +98,3 @@ function getRandomNumber() { // возвращает случайное числ
   var number = Math.random() * (1 - 0.1) + 0.1; // это магия? Д19
   return number.toFixed(1);
 }
-/* Function getCoords (x, y) {
-  вариант с числами, где четное значение пойдет в х, а нечетное в y - get x, get y
-}; */
-
-/* Function getCoords (x, y) {
-  вариант со строками, который провалился
-}; */
-
-/* Function getCoords (x, y) {
-    for (var i = 0; i < RECT_COORDS.length; i++) {
-      var x = parseInt(RECT_COORDS[i]);
-      var y = parseInt(RECT_COORDS[i].split(', ')[1]);
-    ctx.lineTo(x, y);
-  }
-}; */
