@@ -21,7 +21,7 @@ window.renderStatistics = function (ctx, names, times) {
 function renderShape(ctx, coords, colour) {
   ctx.fillStyle = colour;
   ctx.beginPath();
-  ctx.moveTo(ZERO_POINT_X, ZERO_POINT_Y); // x горизонт y вертикаль
+  ctx.moveTo(ZERO_POINT_X, ZERO_POINT_Y);
 
   for (var i = 0; i < coords.length; i++) {
     var x = parseInt(coords[i], 10);
@@ -36,7 +36,7 @@ function renderShape(ctx, coords, colour) {
 function renderText(ctx) {
   ctx.fillStyle = '#000';
   ctx.font = '16px PT Mono';
-  ctx.fillText('Ура! Вы победили!', ZERO_POINT_X + 20, ZERO_POINT_Y + 3 * TOP_GAP); // Д19 ? Это магия ?
+  ctx.fillText('Ура! Вы победили!', ZERO_POINT_X + 20, ZERO_POINT_Y + 3 * TOP_GAP);
   ctx.fillText('Список результатов:', ZERO_POINT_X + 20, ZERO_POINT_Y + 3 * TOP_GAP + FONT_GAP);
 }
 
@@ -44,10 +44,6 @@ function renderBarChart(ctx, names, times) {
   var numberOfPlayers = times.length;
   var opacities = getRandomNumbers(numberOfPlayers);
   var padding = (MAX_INNER_WIDTH - BAR_WIDTH * numberOfPlayers - BAR_GAP * (numberOfPlayers - 1)) / 2;
-  var x;
-  var y;
-  var barHeight;
-  var barPaddingTop;
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < numberOfPlayers; i++) {
@@ -58,28 +54,18 @@ function renderBarChart(ctx, names, times) {
       opacities.splice(0, 1);
     }
 
-    x = ZERO_POINT_X + padding + (BAR_GAP + BAR_WIDTH) * i;
-    y = ZERO_POINT_Y + 2 * TOP_GAP + 3 * FONT_GAP;
-    barHeight = times[i] * MAX_BAR_HEIGHT / maxTime;
-    barPaddingTop = MAX_BAR_HEIGHT - barHeight;
+    var x = ZERO_POINT_X + padding + (BAR_GAP + BAR_WIDTH) * i;
+    var y = ZERO_POINT_Y + 2 * TOP_GAP + 3 * FONT_GAP;
+    var barHeight = times[i] * MAX_BAR_HEIGHT / maxTime;
+    var barPaddingTop = MAX_BAR_HEIGHT - barHeight;
     var time = Math.round(times[i]);
 
     ctx.fillRect(x, y + barPaddingTop, BAR_WIDTH, barHeight);
     ctx.fillStyle = '#000';
-    ctx.fillText(names[i], x, y + MAX_BAR_HEIGHT + FONT_GAP); // text, x, y [, maxWidth]
+    ctx.fillText(names[i], x, y + MAX_BAR_HEIGHT + FONT_GAP);
     ctx.fillText(time, x, y - TOP_GAP / 2 + barPaddingTop);
   }
 
-}
-
-function getMaxElement(array) {
-  var maxElement = array[0];
-  for (var i = 1; i < array.length; i++) {
-    if (array[i] > maxElement) {
-      maxElement = array[i];
-    }
-  }
-  return maxElement;
 }
 
 function getRandomNumbers(players) {
@@ -94,7 +80,17 @@ function getRandomNumbers(players) {
   return numbers;
 }
 
-function getRandomNumber() { // возвращает случайное число от [0.1 до 0.9] c шагом 0.1
-  var number = Math.random() * (1 - 0.1) + 0.1; // это магия? Д19
+function getRandomNumber() {
+  var number = Math.random() * (1 - 0.1) + 0.1;
   return number.toFixed(1);
+}
+
+function getMaxElement(array) {
+  var maxElement = array[0];
+  for (var i = 1; i < array.length; i++) {
+    if (array[i] > maxElement) {
+      maxElement = array[i];
+    }
+  }
+  return maxElement;
 }
