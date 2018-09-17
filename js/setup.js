@@ -7,24 +7,34 @@ var CHARACTERS_SURNAMES = ['Иванов', 'Фон Зажратт', 'Гитле�
 var COATS_COLOURS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLOURS = ['black', 'red', 'blue', 'yellow', 'green'];
 
-appendNewElements(4);
+appendElements(generateCharacters(4));
+
 document.querySelector('.setup-similar').classList.remove('hidden');
 
-function appendNewElements(amount) {
-  for (var i = 0; i < amount; i++) {
-    var newElement = createElement();
-    document.querySelector('.setup-similar-list').appendChild(newElement);
+function appendElements(elements) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < elements.length; i++) {
+    fragment.appendChild(elements[i]);
   }
+  document.querySelector('.setup-similar-list').appendChild(fragment);
 }
 
-function createElement() {
-  var character = createCharacter(CHARACTERS_NAMES, CHARACTERS_SURNAMES, COATS_COLOURS, EYES_COLOURS);
+function generateCharacters(amount) {
+  var characters = [];
+  for (var i = 0; i < amount; i++) {
+    var character = createCharacter(CHARACTERS_NAMES, CHARACTERS_SURNAMES, COATS_COLOURS, EYES_COLOURS);
+    characters[i] = createElement(character);
+  }
+  return characters;
+}
+
+function createElement(object) {
   var template = document.getElementById('similar-wizard-template').content.querySelector('.setup-similar-item');
   var element = template.cloneNode(true);
 
-  element.querySelector('.setup-similar-label').textContent = character.name;
-  element.querySelector('.wizard-coat').style.fill = character.coatColour;
-  element.querySelector('.wizard-eyes').style.fill = character.eyesColour;
+  element.querySelector('.setup-similar-label').textContent = object.name;
+  element.querySelector('.wizard-coat').style.fill = object.coatColour;
+  element.querySelector('.wizard-eyes').style.fill = object.eyesColour;
 
   return element;
 }
