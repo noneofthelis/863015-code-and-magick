@@ -2,15 +2,44 @@
 
 document.querySelector('.setup.hidden').classList.remove('hidden');
 
-var CHARACTERS_NAMES = ['Ивашко', 'Хуан Себастьян де ля Фонтан', 'Фридрих Хамутальевич', 'Саурон', 'Хуанхэ', 'Владимир Владимирович', 'Лютик', 'Донат'];
-var CHARACTERS_SURNAMES = ['Иванов', 'Фон Зажратт', 'Гитлер', 'Поперексебяш', 'Храмп', 'Ядовитый', 'Побегайло', 'Берегикопыто'];
-var COATS_COLOURS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLOURS = ['black', 'red', 'blue', 'yellow', 'green'];
+var CHARACTERS_NAMES = [
+  'Ивашко',
+  'Хуан Себастьян де ля Фонтан',
+  'Фридрих Хамутальевич',
+  'Саурон',
+  'Хуанхэ',
+  'Владимир Владимирович',
+  'Лютик',
+  'Донат'
+];
+var CHARACTERS_SURNAMES = [
+  'Иванов',
+  'Фон Зажратт',
+  'Гитлер',
+  'Поперексебяш',
+  'Храмп',
+  'Ядовитый',
+  'Побегайло',
+  'Берегикопыто'
+];
+var COATS_COLOURS = [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+];
+var EYES_COLOURS = [
+  'black',
+  'red',
+  'blue',
+  'yellow',
+  'green'
+];
 var CHARACTERS_AMOUNT = 4;
 
 appendElements(generateCharacters(CHARACTERS_AMOUNT));
-
-document.querySelector('.setup-similar').classList.remove('hidden');
 
 function appendElements(elements) {
   var fragment = document.createDocumentFragment();
@@ -52,3 +81,5 @@ function createCharacter(names, surnames, clothes, eyesColours) {
 function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
+
+document.querySelector('.setup-similar').classList.remove('hidden');
