@@ -1,7 +1,5 @@
 'use strict';
 
-document.querySelector('.setup.hidden').classList.remove('hidden');
-
 var CHARACTERS_NAMES = [
   'Ивашко',
   'Хуан Себастьян де ля Фонтан',
@@ -38,8 +36,6 @@ var EYES_COLOURS = [
   'green'
 ];
 var CHARACTERS_AMOUNT = 4;
-
-appendElements(generateCharacters(CHARACTERS_AMOUNT));
 
 function appendElements(elements) {
   var fragment = document.createDocumentFragment();
@@ -83,3 +79,5 @@ function getRandomElement(array) {
 }
 
 document.querySelector('.setup-similar').classList.remove('hidden');
+document.querySelector('.setup.hidden').classList.remove('hidden');
+appendElements(generateCharacters(CHARACTERS_AMOUNT));
