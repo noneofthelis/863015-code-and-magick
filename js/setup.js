@@ -93,7 +93,29 @@ function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// #14
+function generateValue(element, propertyToSet, array, selectorPrefix) {
+  var input = setup.querySelector('input[name = "' + selectorPrefix + '-color"]');
+  var colour = getRandomElement(array);
+  if (input.value === colour) {
+    generateValue(element, propertyToSet, array, selectorPrefix);
+  } else {
+    element.style[propertyToSet] = colour;
+    input.value = colour;
+  }
+}
+
+function initHandlers() {
+  userNameInput.addEventListener('invalid', onUserNameInputInvalid);
+
+  setupOpen.addEventListener('click', onSetupOpenClick);
+  setupOpen.addEventListener('keydown', onSetupOpenPress);
+  setupClose.addEventListener('click', onSetupCloseClick);
+  setupClose.addEventListener('keydown', onSetupClosePress);
+
+  setup.querySelector('.wizard-coat').addEventListener('click', onCharacterCoatClick);
+  setup.querySelector('.wizard-eyes').addEventListener('click', onCharacterEyesClick);
+  setup.querySelector('.setup-fireball').addEventListener('click', onCharacterFireballClick);
+}
 
 function onUserNameInputInvalid() {
   if (userNameInput.validity.tooShort) {
@@ -110,7 +132,6 @@ function onUserNameInputInvalid() {
 function showPopup() {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onEscPress);
-  submitButton.addEventListener('keydown', onSubmitButtonPress);
   submitButton.addEventListener('click', onSubmitButtonClick);
 }
 
@@ -125,12 +146,6 @@ function sendForm() {
 
 function onSubmitButtonClick() {
   if (userNameInput.validity.valid) {
-    sendForm();
-  }
-}
-
-function onSubmitButtonPress(evt) {
-  if (evt.keyCode === ENTER_KEYCODE && submitButton === document.activeElement && userNameInput.validity.valid) {
     sendForm();
   }
 }
@@ -173,21 +188,5 @@ function onSetupClosePress(evt) {
   }
 }
 
-function generateValue(element, propertyToSet, array, selectorPrefix) {
-  var colour = getRandomElement(array);
-  element.setAttribute('style', propertyToSet + ':' + colour + ';');
-  setup.querySelector('input[name = "' + selectorPrefix + '-color"]').value = colour;
-}
-
-userNameInput.addEventListener('invalid', onUserNameInputInvalid);
-
-setupOpen.addEventListener('click', onSetupOpenClick);
-setupOpen.addEventListener('keydown', onSetupOpenPress);
-setupClose.addEventListener('click', onSetupCloseClick);
-setupClose.addEventListener('keydown', onSetupClosePress);
-
-setup.querySelector('.wizard-coat').addEventListener('click', onCharacterCoatClick);
-setup.querySelector('.wizard-eyes').addEventListener('click', onCharacterEyesClick);
-setup.querySelector('.setup-fireball').addEventListener('click', onCharacterFireballClick);
-
 appendElements(generateCharacters(CHARACTERS_AMOUNT));
+initHandlers();
